@@ -28,7 +28,7 @@ type mhyResp struct {
 	} `json:"data"`
 }
 
-// 用户信息响应
+// MemberResp 用户信息响应
 type MemberResp struct {
 	baseResp
 	Member model.Member
@@ -47,7 +47,12 @@ func (bot *Bot) commonHanlder(req *http.Request, villaId uint64) ([]byte, bool) 
 		fmt.Println("Request Error:", err)
 		return nil, false
 	}
-	defer response.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			// todo: xq你看一下
+		}
+	}(response.Body)
 
 	bodyBytes, _ := io.ReadAll(response.Body)
 

@@ -4,7 +4,7 @@ import "strings"
 
 type HandleFunc func(*Context)
 
-// matcher 是指令匹配器，用于消息是否命中关键词
+// Matcher 是指令匹配器，用于消息是否命中关键词
 type Matcher interface {
 	Judge(*Context, string) bool
 }

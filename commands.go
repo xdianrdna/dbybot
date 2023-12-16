@@ -21,22 +21,22 @@ func (e *commandEngine) addCommand(matcher Matcher, keyword string, fn HandleFun
 	e.commands = append(e.commands, command)
 }
 
-// 以前缀匹配新增一条命令
+// StartWith 以前缀匹配新增一条命令
 func (e *commandEngine) StartWith(keyword string, fn HandleFunc) {
 	e.addCommand(prefixMatcher{}, keyword, fn)
 }
 
-// 以后缀匹配新增一条命令
+// EndWith 以后缀匹配新增一条命令
 func (e *commandEngine) EndWith(keyword string, fn HandleFunc) {
 	e.addCommand(suffixMatcher{}, keyword, fn)
 }
 
-// 以包含匹配新增一条命令
+// Contains 以包含匹配新增一条命令
 func (e *commandEngine) Contains(keyword string, fn HandleFunc) {
 	e.addCommand(containsMatcher{}, keyword, fn)
 }
 
-// 自定义
+// UseMatcher 自定义
 func (e *commandEngine) UseMatcher(matcher Matcher, keyword string, fn HandleFunc) {
 	e.addCommand(matcher, keyword, fn)
 }

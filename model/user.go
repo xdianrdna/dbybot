@@ -9,7 +9,7 @@ const (
 	//...
 )
 
-// 用户信息
+// Member 用户信息
 type Member struct {
 	MemberBasic membetBasic `json:"basic"`
 

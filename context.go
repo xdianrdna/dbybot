@@ -19,10 +19,10 @@ type Context struct {
 	SenderNickName string // 消息发送者昵称
 	SenderId       int    // 消息发送者 uid
 
-	callback *callback // 一些特别的场景当中，可以主动获取 callback 进行进一步的处理
+	callback *Callback // 一些特别的场景当中，可以主动获取 callback 进行进一步的处理
 }
 
-func NewBotContext(callback *callback) *Context {
+func NewBotContext(callback *Callback) *Context {
 	ctx := &Context{}
 	ctx.bot = globalBot
 
@@ -45,7 +45,7 @@ func NewBotContext(callback *callback) *Context {
 //
 // 该函数会去除消息中所有 "@机器人" 的内容，然后移除前导空格与后导空格，并且只保留最多一个连续空格。
 // 如原始消息为(机器人名为 foo) "   @foo hello    world  @foo  ", 处理后为 "hello world"
-func disposeMessage(callback *callback) string {
+func disposeMessage(callback *Callback) string {
 	message := callback.Event.ExtendData.EventData.
 		SendMessage.OContent.Content.Text
 	nickname := callback.Event.Robot.Template.Name
@@ -58,7 +58,7 @@ func disposeMessage(callback *callback) string {
 	return message
 }
 
-// 提供给使用方获取 callback 的方法
-func (context *Context) FetchCallback() *callback {
-	return context.callback
+// FetchCallback 提供给使用方获取 callback 的方法
+func (ctx *Context) FetchCallback() *Callback {
+	return ctx.callback
 }

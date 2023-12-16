@@ -52,7 +52,7 @@ func Serve(path string, port uint16) {
 
 	g.POST(path, func(c *gin.Context) {
 		// 解析 callback
-		callback := &callback{}
+		callback := &Callback{}
 		c.ShouldBindJSON(&callback)
 		err := json.Unmarshal([]byte(callback.Event.ExtendData.EventData.SendMessage.ContentStr),
 			&callback.Event.ExtendData.EventData.SendMessage.OContent)

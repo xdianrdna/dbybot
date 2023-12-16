@@ -1,10 +1,10 @@
 package dbybot
 
-type callback struct {
+type Callback struct {
 	Event Event `json:"event"`
 }
 
-// 事件信息
+// Event 事件信息
 type Event struct {
 	Robot      Robot      `json:"robot"`
 	Type       int        `json:"type"`        // 事件类型 todo: use const
@@ -13,13 +13,13 @@ type Event struct {
 	SendAt     uint64     `json:"send_at"`
 }
 
-// 机器人相关信息
+// Robot 机器人相关信息
 type Robot struct {
 	Template Template `json:"template"`
 	VillaId  uint64   `json:"villa_id"`
 }
 
-// 机器人模板信息
+// Template 机器人模板信息
 type Template struct {
 	Id       string    `json:"id"`
 	Name     string    `json:"name"`
@@ -28,20 +28,20 @@ type Template struct {
 	Commands []Command `json:"commands"`
 }
 
-// 机器人装载的命令
+// Command 机器人装载的命令
 type Command struct {
 	Name string `json:"name"`
 	Desc string `json:"desc"`
 }
 
-// 事件的具体数据
+// ExtendData 事件的具体数据
 type ExtendData struct {
 	EventData struct {
 		SendMessage SendMessage `json:"SendMessage"`
 	} `json:"EventData"`
 }
 
-// 用户@机器人发送消息的回调数据
+// SendMessage 用户@机器人发送消息的回调数据
 type SendMessage struct {
 	ContentStr string `json:"content"`
 	OContent   OContent
@@ -56,7 +56,7 @@ type SendMessage struct {
 	QuoteMsg   QuoteMsg `json:"quote_msg"`
 }
 
-// 回调消息引用消息的基础信息
+// QuoteMsg 回调消息引用消息的基础信息
 type QuoteMsg struct {
 	ContentStr       string `json:"content"`
 	OContent         OContent
