@@ -6,12 +6,12 @@ type command struct {
 	fn      HandleFunc // 执行的函数
 }
 
-type commandEngine struct {
+type CommandEngine struct {
 	commands []command
 }
 
 // 内部使用的追加命令功能
-func (e *commandEngine) addCommand(matcher Matcher, keyword string, fn HandleFunc) {
+func (e *CommandEngine) addCommand(matcher Matcher, keyword string, fn HandleFunc) {
 	command := command{
 		keyword: keyword,
 		matcher: matcher,
@@ -22,21 +22,21 @@ func (e *commandEngine) addCommand(matcher Matcher, keyword string, fn HandleFun
 }
 
 // StartWith 以前缀匹配新增一条命令
-func (e *commandEngine) StartWith(keyword string, fn HandleFunc) {
+func (e *CommandEngine) StartWith(keyword string, fn HandleFunc) {
 	e.addCommand(prefixMatcher{}, keyword, fn)
 }
 
 // EndWith 以后缀匹配新增一条命令
-func (e *commandEngine) EndWith(keyword string, fn HandleFunc) {
+func (e *CommandEngine) EndWith(keyword string, fn HandleFunc) {
 	e.addCommand(suffixMatcher{}, keyword, fn)
 }
 
 // Contains 以包含匹配新增一条命令
-func (e *commandEngine) Contains(keyword string, fn HandleFunc) {
+func (e *CommandEngine) Contains(keyword string, fn HandleFunc) {
 	e.addCommand(containsMatcher{}, keyword, fn)
 }
 
 // UseMatcher 自定义
-func (e *commandEngine) UseMatcher(matcher Matcher, keyword string, fn HandleFunc) {
+func (e *CommandEngine) UseMatcher(matcher Matcher, keyword string, fn HandleFunc) {
 	e.addCommand(matcher, keyword, fn)
 }

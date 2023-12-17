@@ -7,7 +7,7 @@ import (
 
 // 包含了发送消息的基本请求实例
 
-// 发送实例结构声明
+// SendMessageReq 发送实例结构声明
 type SendMessageReq struct {
 	RoomId        uint64 `json:"room_id"`
 	ObjectName    string `json:"object_name"`

@@ -1,4 +1,4 @@
-module github.com/xdianrdna/dbybot 
+module github.com/xdianrdna/dbybot
 
 go 1.19
 

@@ -10,7 +10,7 @@ import (
 
 type Bot struct {
 	auth    auth          // 认证信息
-	engine  commandEngine // 指令管理器
+	engine  CommandEngine // 指令管理器
 	Context *Context      // 上下文，将会携带每次生成 callback 时上下文信息
 }
 
@@ -24,14 +24,14 @@ var globalBot *Bot
 func init() {
 	globalBot = &Bot{
 		auth: auth{},
-		engine: commandEngine{
+		engine: CommandEngine{
 			commands: make([]command, 0),
 		},
 		Context: &Context{},
 	}
 }
 
-// 注册别野机器人
+// Register 注册别野机器人
 func Register(id, secretKey string) {
 	globalBot.auth.id = id
 	globalBot.auth.secretKey = secretKey
@@ -41,11 +41,11 @@ func Get() *Bot {
 	return globalBot
 }
 
-func Engine() *commandEngine {
+func Engine() *CommandEngine {
 	return &globalBot.engine
 }
 
-// 机器人开始上监听端口，接收回调的地址由 path 指定
+// Serve 机器人开始上监听端口，接收回调的地址由 path 指定
 // 如 bot.Serve("/mhy", 12345) 将启动在 12345 端口上监听回调请求
 func Serve(path string, port uint16) {
 	g := gin.Default()
@@ -53,8 +53,11 @@ func Serve(path string, port uint16) {
 	g.POST(path, func(c *gin.Context) {
 		// 解析 callback
 		callback := &Callback{}
-		c.ShouldBindJSON(&callback)
-		err := json.Unmarshal([]byte(callback.Event.ExtendData.EventData.SendMessage.ContentStr),
+		err := c.ShouldBindJSON(&callback)
+		if err != nil {
+			return
+		}
+		err = json.Unmarshal([]byte(callback.Event.ExtendData.EventData.SendMessage.ContentStr),
 			&callback.Event.ExtendData.EventData.SendMessage.OContent)
 		if err != nil {
 			fmt.Println("Callback convert to json error:", err)
@@ -75,7 +78,10 @@ func Serve(path string, port uint16) {
 	})
 
 	portStr := fmt.Sprintf(":%d", port)
-	g.Run(portStr)
+	err := g.Run(portStr)
+	if err != nil {
+		return
+	}
 }
 
 // bot 开始处理一条回调
